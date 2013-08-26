@@ -12,9 +12,6 @@
 
 + (HUD *)sharedInstance;
 
-- (void)clear;
-
-- (void)bindScrollView:(UIScrollView *)scrollView;
 - (void)bindViewController:(UIViewController *)viewController;
 
 @end

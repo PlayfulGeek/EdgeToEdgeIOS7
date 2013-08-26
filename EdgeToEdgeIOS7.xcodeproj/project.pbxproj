@@ -17,13 +17,14 @@
 		71ECC8DC17BEEB6300E62214 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71ECC8DB17BEEB6300E62214 /* main.m */; };
 		71ECC8E017BEEB6300E62214 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71ECC8DF17BEEB6300E62214 /* AppDelegate.m */; };
 		71ECC8E317BEEB6300E62214 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71ECC8E117BEEB6300E62214 /* Main.storyboard */; };
-		71ECC8E617BEEB6300E62214 /* PlainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71ECC8E517BEEB6300E62214 /* PlainViewController.m */; };
+		71ECC8E617BEEB6300E62214 /* SimpleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71ECC8E517BEEB6300E62214 /* SimpleViewController.m */; };
 		71ECC8E817BEEB6300E62214 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71ECC8E717BEEB6300E62214 /* Images.xcassets */; };
 		71ECC8EF17BEEB6300E62214 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71ECC8EE17BEEB6300E62214 /* XCTest.framework */; };
 		71ECC8F017BEEB6300E62214 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71ECC8CF17BEEB6300E62214 /* Foundation.framework */; };
 		71ECC8F117BEEB6300E62214 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71ECC8D317BEEB6300E62214 /* UIKit.framework */; };
 		71ECC8F917BEEB6300E62214 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71ECC8F717BEEB6300E62214 /* InfoPlist.strings */; };
 		71ECC8FB17BEEB6300E62214 /* EdgeToEdgeIOS7Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 71ECC8FA17BEEB6300E62214 /* EdgeToEdgeIOS7Tests.m */; };
+		71FB017F17C8100800475D56 /* HUDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FB017E17C8100800475D56 /* HUDViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,14 +55,16 @@
 		71ECC8DE17BEEB6300E62214 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		71ECC8DF17BEEB6300E62214 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		71ECC8E217BEEB6300E62214 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		71ECC8E417BEEB6300E62214 /* PlainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlainViewController.h; sourceTree = "<group>"; };
-		71ECC8E517BEEB6300E62214 /* PlainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlainViewController.m; sourceTree = "<group>"; };
+		71ECC8E417BEEB6300E62214 /* SimpleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimpleViewController.h; sourceTree = "<group>"; };
+		71ECC8E517BEEB6300E62214 /* SimpleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimpleViewController.m; sourceTree = "<group>"; };
 		71ECC8E717BEEB6300E62214 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		71ECC8ED17BEEB6300E62214 /* EdgeToEdgeIOS7Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EdgeToEdgeIOS7Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71ECC8EE17BEEB6300E62214 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		71ECC8F617BEEB6300E62214 /* EdgeToEdgeIOS7Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EdgeToEdgeIOS7Tests-Info.plist"; sourceTree = "<group>"; };
 		71ECC8F817BEEB6300E62214 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		71ECC8FA17BEEB6300E62214 /* EdgeToEdgeIOS7Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EdgeToEdgeIOS7Tests.m; sourceTree = "<group>"; };
+		71FB017D17C8100800475D56 /* HUDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUDViewController.h; sourceTree = "<group>"; };
+		71FB017E17C8100800475D56 /* HUDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUDViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,12 +127,14 @@
 				71ECC8DE17BEEB6300E62214 /* AppDelegate.h */,
 				71ECC8DF17BEEB6300E62214 /* AppDelegate.m */,
 				71ECC8E117BEEB6300E62214 /* Main.storyboard */,
+				71FB017D17C8100800475D56 /* HUDViewController.h */,
+				71FB017E17C8100800475D56 /* HUDViewController.m */,
 				71CEBD5417C5631A0062C36C /* HUD.h */,
 				71CEBD5517C5631A0062C36C /* HUD.m */,
+				71ECC8E417BEEB6300E62214 /* SimpleViewController.h */,
+				71ECC8E517BEEB6300E62214 /* SimpleViewController.m */,
 				71CEBD5117C55FD70062C36C /* Nav0ViewController.h */,
 				71CEBD5217C55FD70062C36C /* Nav0ViewController.m */,
-				71ECC8E417BEEB6300E62214 /* PlainViewController.h */,
-				71ECC8E517BEEB6300E62214 /* PlainViewController.m */,
 				71CEBD5717C56ADC0062C36C /* KVOBlock.h */,
 				71CEBD5817C56ADC0062C36C /* KVOBlock.m */,
 				71ECC8E717BEEB6300E62214 /* Images.xcassets */,
@@ -268,9 +273,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				71CEBD5617C5631A0062C36C /* HUD.m in Sources */,
-				71ECC8E617BEEB6300E62214 /* PlainViewController.m in Sources */,
+				71ECC8E617BEEB6300E62214 /* SimpleViewController.m in Sources */,
 				71CEBD5317C55FD70062C36C /* Nav0ViewController.m in Sources */,
 				71ECC8E017BEEB6300E62214 /* AppDelegate.m in Sources */,
+				71FB017F17C8100800475D56 /* HUDViewController.m in Sources */,
 				71CEBD5917C56ADC0062C36C /* KVOBlock.m in Sources */,
 				71ECC8DC17BEEB6300E62214 /* main.m in Sources */,
 			);

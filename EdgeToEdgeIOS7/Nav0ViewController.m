@@ -17,8 +17,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[HUD sharedInstance] clear];
-    [[HUD sharedInstance] bindScrollView:(UICollectionView *)self.collectionView];
     [[HUD sharedInstance] bindViewController:self];
 }
 
