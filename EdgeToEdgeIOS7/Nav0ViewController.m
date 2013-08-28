@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 955 Dreams. All rights reserved.
 //
 
-#import "Nav0ViewController.h"
 #import "HUD.h"
+#import "Nav0Cell.h"
+#import "Nav0ViewController.h"
 
 @interface Nav0ViewController ()
-
 @end
 
 @implementation Nav0ViewController
@@ -25,12 +25,12 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"TestCell" forIndexPath:indexPath];
+    Nav0Cell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"TestCell" forIndexPath:indexPath];
+    cell.cellNumber = indexPath.row + 1;
     return cell;
 }
 
 //- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    [self nav]
 //}
 
 @end

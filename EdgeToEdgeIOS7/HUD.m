@@ -21,6 +21,7 @@
 @implementation HUD {
     NSMutableArray *_observations;
     UIViewController *_viewController;
+    UIScrollView *_scrollViewOrNil;
 }
 
 + (HUD *)sharedInstance {
@@ -40,15 +41,14 @@
 }
 
 - (void)update {
-    UIScrollView *scrollView = ([[_viewController view] isKindOfClass:[UIScrollView class]] ? (UIScrollView *)[_viewController view] : nil);
-    _contentInsetLabel.text = (scrollView
-                               ? [NSString stringWithFormat:@"content inset: %.1f %.1f", scrollView.contentInset.top, scrollView.contentInset.bottom]
-                               : @"content inset: (not scroll view)");
+    _contentInsetLabel.text = (_scrollViewOrNil
+                               ? [NSString stringWithFormat:@"top: %.0f, bottom: %.0f", _scrollViewOrNil.contentInset.top, _scrollViewOrNil.contentInset.bottom]
+                               : @"(not scroll view)");
     
     _automaticallyAdjustsScrollViewInsetsSwitch.on = _viewController.automaticallyAdjustsScrollViewInsets;
     
-    _topLayoutGuideLabel.text = [NSString stringWithFormat:@"top layout guide: %.1f", _viewController.topLayoutGuide.length];
-    _bottomLayoutGuideLabel.text = [NSString stringWithFormat:@"bottom layout guide: %.1f", _viewController.bottomLayoutGuide.length];
+    _topLayoutGuideLabel.text = [NSString stringWithFormat:@"top layout guide: %.0f", _viewController.topLayoutGuide.length];
+    _bottomLayoutGuideLabel.text = [NSString stringWithFormat:@"bottom layout guide: %.0f", _viewController.bottomLayoutGuide.length];
     
     _edgesForExtendedLayoutTopSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeTop;
     _edgesForExtendedLayoutBottomSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeBottom;
@@ -58,7 +58,8 @@
     [self removeObservations];
     
     _viewController = viewController;
-    [self updateAndLogViewControllerHierarchyWithReason:@"leaf view controller bound"];
+    _scrollViewOrNil = [self firstScrollViewInView:_viewController.view];
+    [self performSelector:@selector(updateAndLogViewControllerHierarchyWithReason:) withObject:@"leaf view controller bound" afterDelay:0];
     
     [self observeViewController:_viewController];
     if ([[_viewController view] isKindOfClass:[UIScrollView class]]) {
@@ -66,11 +67,24 @@
     }
 }
 
+- (UIScrollView *)firstScrollViewInView:(UIView *)view { // nil if none; [TODO: check whether iOS VCs use depth first]
+    if ([view isKindOfClass:[UIScrollView class]]) {
+        return (UIScrollView *)view;
+    }
+    for (UIView *subview in [view subviews]) {
+        UIScrollView *firstScrollViewInSubviews = [self firstScrollViewInView:subview];
+        if (firstScrollViewInSubviews) {
+            return firstScrollViewInSubviews;
+        }
+    }
+    return nil;
+}
+
 - (void)observeViewController:(UIViewController *)viewController {
     [_observations addObject:
      [KVOBlock addObserverForKeyPath:@"automaticallyAdjustsScrollViewInsets" ofObject:viewController withOptions:0 usingBlock:^(NSObject *object, NSString *keyPath, NSDictionary *change) {
         
-        [self relayoutUpdateAndLogViewControllerHierarchyWithReason:@"auto-adjust scroll insets set"];
+        [self layoutUpdateAndLogViewControllerHierarchyWithReason:@"auto-adjust scroll insets set"];
     }]];
     
     // [layoutGuides not KVC]
@@ -78,7 +92,7 @@
     [_observations addObject:
      [KVOBlock addObserverForKeyPath:@"edgesForExtendedLayout" ofObject:viewController withOptions:0 usingBlock:^(NSObject *object, NSString *keyPath, NSDictionary *change) {
         
-        [self relayoutUpdateAndLogViewControllerHierarchyWithReason:@"edges for extended layout set"];
+        [self layoutUpdateAndLogViewControllerHierarchyWithReason:@"edges for extended layout set"];
     }]];
 }
 
@@ -86,7 +100,7 @@
     [_observations addObject:
      [KVOBlock addObserverForKeyPath:@"contentInset" ofObject:scrollView withOptions:0 usingBlock:^(NSObject *object, NSString *keyPath, NSDictionary *change) {
         
-        [self relayoutUpdateAndLogViewControllerHierarchyWithReason:@"content inset set"];
+        [self layoutUpdateAndLogViewControllerHierarchyWithReason:@"content inset set"];
     }]];
 }
 
@@ -116,7 +130,7 @@
     _viewController.edgesForExtendedLayout = edges;
 }
 
-- (void)relayoutUpdateAndLogViewControllerHierarchyWithReason:(NSString *)reason {
+- (void)layoutUpdateAndLogViewControllerHierarchyWithReason:(NSString *)reason {
     [[_viewController parentViewController].view setNeedsUpdateConstraints];
     [[_viewController parentViewController].view updateConstraintsIfNeeded];
     [[_viewController parentViewController].view setNeedsLayout];
@@ -127,31 +141,48 @@
     [self update];
     
     NSLog(@"\n\n%@; frame=%@", reason, NSStringFromCGRect([_viewController view].frame));
-    [self apply:^(UIViewController *viewController) {
+    [self applyBlock:^(UIViewController *viewController) {
+        
+        NSMutableString *message = [NSMutableString stringWithString:NSStringFromClass([viewController class])];
+        
+        [message appendFormat:@", layout guide top=%.1f bottom=%.1f", viewController.topLayoutGuide.length, viewController.bottomLayoutGuide.length];
+
+        [message appendFormat:@", auto-adjusts scroll insets=%@", viewController.automaticallyAdjustsScrollViewInsets?@"YES":@"NO"];
+        
         NSMutableString *edgesForExtendedLayoutText = [NSMutableString string];
         if (viewController.edgesForExtendedLayout & UIRectEdgeTop) {
-            [edgesForExtendedLayoutText appendString:@" top"];
+            if (edgesForExtendedLayoutText.length)
+                [edgesForExtendedLayoutText appendString:@" "];
+            [edgesForExtendedLayoutText appendString:@"top"];
         }
         if (viewController.edgesForExtendedLayout & UIRectEdgeBottom) {
-            [edgesForExtendedLayoutText appendString:@" bottom"];
+            if (edgesForExtendedLayoutText.length)
+                [edgesForExtendedLayoutText appendString:@" "];
+            [edgesForExtendedLayoutText appendString:@"bottom"];
         }
         if (viewController.edgesForExtendedLayout & UIRectEdgeLeft) {
-            [edgesForExtendedLayoutText appendString:@" left"];
+            if (edgesForExtendedLayoutText.length)
+                [edgesForExtendedLayoutText appendString:@" "];
+            [edgesForExtendedLayoutText appendString:@"left"];
         }
         if (viewController.edgesForExtendedLayout & UIRectEdgeRight) {
-            [edgesForExtendedLayoutText appendString:@" right"];
+            if (edgesForExtendedLayoutText.length)
+                [edgesForExtendedLayoutText appendString:@" "];
+            [edgesForExtendedLayoutText appendString:@"right"];
         }
-        NSLog(@"%@, guides top=%.1f bottom=%.1f, auto-adjusts scroll insets=%@, edges for extended layout=%@",
-              NSStringFromClass([viewController class]),
-              viewController.topLayoutGuide.length, viewController.bottomLayoutGuide.length,
-              viewController.automaticallyAdjustsScrollViewInsets?@"YES":@"NO",
-              edgesForExtendedLayoutText);
+        [message appendFormat:@", edges for extended layout=%@", edgesForExtendedLayoutText];
+        
+        if (_scrollViewOrNil) {
+            [message appendFormat:@", content inset top=%.1f bottom=%.1f left=%.1f right=%.1f", _scrollViewOrNil.contentInset.top, _scrollViewOrNil.contentInset.bottom, _scrollViewOrNil.contentInset.left, _scrollViewOrNil.contentInset.right];
+        }
+        
+        NSLog(@"%@", message);
     } toViewControllerAndAncestors:_viewController];
 }
 
-- (void)apply:(void (^)(UIViewController *viewController))block toViewControllerAndAncestors:(UIViewController *)viewController {
+- (void)applyBlock:(void (^)(UIViewController *viewController))block toViewControllerAndAncestors:(UIViewController *)viewController {
     if (viewController.parentViewController) {
-        [self apply:block toViewControllerAndAncestors:viewController.parentViewController];
+        [self applyBlock:block toViewControllerAndAncestors:viewController.parentViewController];
     }
     block(viewController);
 }
