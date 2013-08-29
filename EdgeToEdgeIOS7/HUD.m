@@ -45,13 +45,13 @@
                                ? [NSString stringWithFormat:@"top: %.0f, bottom: %.0f", _scrollViewOrNil.contentInset.top, _scrollViewOrNil.contentInset.bottom]
                                : @"(not scroll view)");
     
-    _automaticallyAdjustsScrollViewInsetsSwitch.on = _viewController.automaticallyAdjustsScrollViewInsets;
+    //xxx_automaticallyAdjustsScrollViewInsetsSwitch.on = _viewController.automaticallyAdjustsScrollViewInsets;
     
     _topLayoutGuideLabel.text = [NSString stringWithFormat:@"top layout guide: %.0f", _viewController.topLayoutGuide.length];
     _bottomLayoutGuideLabel.text = [NSString stringWithFormat:@"bottom layout guide: %.0f", _viewController.bottomLayoutGuide.length];
     
-    _edgesForExtendedLayoutTopSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeTop;
-    _edgesForExtendedLayoutBottomSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeBottom;
+    //xxx_edgesForExtendedLayoutTopSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeTop;
+    //xxx_edgesForExtendedLayoutBottomSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeBottom;
 }
 
 - (void)bindViewController:(UIViewController *)viewController {
@@ -87,7 +87,7 @@
         [self layoutUpdateAndLogViewControllerHierarchyWithReason:@"auto-adjust scroll insets set"];
     }]];
     
-    // [layoutGuides not KVC]
+    // (layoutGuides not KVC)
     
     [_observations addObject:
      [KVOBlock addObserverForKeyPath:@"edgesForExtendedLayout" ofObject:viewController withOptions:0 usingBlock:^(NSObject *object, NSString *keyPath, NSDictionary *change) {
@@ -149,28 +149,7 @@
 
         [message appendFormat:@", auto-adjusts scroll insets=%@", viewController.automaticallyAdjustsScrollViewInsets?@"YES":@"NO"];
         
-        NSMutableString *edgesForExtendedLayoutText = [NSMutableString string];
-        if (viewController.edgesForExtendedLayout & UIRectEdgeTop) {
-            if (edgesForExtendedLayoutText.length)
-                [edgesForExtendedLayoutText appendString:@" "];
-            [edgesForExtendedLayoutText appendString:@"top"];
-        }
-        if (viewController.edgesForExtendedLayout & UIRectEdgeBottom) {
-            if (edgesForExtendedLayoutText.length)
-                [edgesForExtendedLayoutText appendString:@" "];
-            [edgesForExtendedLayoutText appendString:@"bottom"];
-        }
-        if (viewController.edgesForExtendedLayout & UIRectEdgeLeft) {
-            if (edgesForExtendedLayoutText.length)
-                [edgesForExtendedLayoutText appendString:@" "];
-            [edgesForExtendedLayoutText appendString:@"left"];
-        }
-        if (viewController.edgesForExtendedLayout & UIRectEdgeRight) {
-            if (edgesForExtendedLayoutText.length)
-                [edgesForExtendedLayoutText appendString:@" "];
-            [edgesForExtendedLayoutText appendString:@"right"];
-        }
-        [message appendFormat:@", edges for extended layout=%@", edgesForExtendedLayoutText];
+        [message appendFormat:@", edges for extended layout=%@", [HUD edgesForExtendedLayoutDescription:viewController.edgesForExtendedLayout]];
         
         if (_scrollViewOrNil) {
             [message appendFormat:@", content inset top=%.1f bottom=%.1f left=%.1f right=%.1f", _scrollViewOrNil.contentInset.top, _scrollViewOrNil.contentInset.bottom, _scrollViewOrNil.contentInset.left, _scrollViewOrNil.contentInset.right];
@@ -178,6 +157,29 @@
         
         NSLog(@"%@", message);
     } toViewControllerAndAncestors:_viewController];
+}
+
++ (NSString *)edgesForExtendedLayoutDescription:(UIRectEdge)edges {
+    NSMutableString *description = [NSMutableString string];
+    if (edges & UIRectEdgeTop) {
+        [description appendString:@"top"];
+    }
+    if (edges & UIRectEdgeBottom) {
+        if (description.length)
+            [description appendString:@" "];
+        [description appendString:@"bottom"];
+    }
+    if (edges & UIRectEdgeLeft) {
+        if (description.length)
+            [description appendString:@" "];
+        [description appendString:@"left"];
+    }
+    if (edges & UIRectEdgeRight) {
+        if (description.length)
+            [description appendString:@" "];
+        [description appendString:@"right"];
+    }
+    return [NSString stringWithString:description];
 }
 
 - (void)applyBlock:(void (^)(UIViewController *viewController))block toViewControllerAndAncestors:(UIViewController *)viewController {

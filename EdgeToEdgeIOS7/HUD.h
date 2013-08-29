@@ -14,4 +14,6 @@
 
 - (void)bindViewController:(UIViewController *)viewController;
 
++ (NSString *)edgesForExtendedLayoutDescription:(UIRectEdge)edges;
+
 @end
