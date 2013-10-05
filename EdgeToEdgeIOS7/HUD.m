@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *bottomLayoutGuideLabel;
 @property (weak, nonatomic) IBOutlet UISwitch *edgesForExtendedLayoutTopSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *edgesForExtendedLayoutBottomSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *statusOverlayHiddenSwitch;
 @end
 
 @implementation HUD {
@@ -43,15 +44,15 @@
 - (void)update {
     _contentInsetLabel.text = (_scrollViewOrNil
                                ? [NSString stringWithFormat:@"top: %.0f, bottom: %.0f", _scrollViewOrNil.contentInset.top, _scrollViewOrNil.contentInset.bottom]
-                               : @"(not scroll view)");
+                               : @"(no scroll view)");
     
-    //xxx_automaticallyAdjustsScrollViewInsetsSwitch.on = _viewController.automaticallyAdjustsScrollViewInsets;
+    _automaticallyAdjustsScrollViewInsetsSwitch.on = _viewController.automaticallyAdjustsScrollViewInsets;
     
     _topLayoutGuideLabel.text = [NSString stringWithFormat:@"top layout guide: %.0f", _viewController.topLayoutGuide.length];
     _bottomLayoutGuideLabel.text = [NSString stringWithFormat:@"bottom layout guide: %.0f", _viewController.bottomLayoutGuide.length];
     
-    //xxx_edgesForExtendedLayoutTopSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeTop;
-    //xxx_edgesForExtendedLayoutBottomSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeBottom;
+    _edgesForExtendedLayoutTopSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeTop;
+    _edgesForExtendedLayoutBottomSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeBottom;
 }
 
 - (void)bindViewController:(UIViewController *)viewController {
@@ -87,7 +88,7 @@
         [self layoutUpdateAndLogViewControllerHierarchyWithReason:@"auto-adjust scroll insets set"];
     }]];
     
-    // (layoutGuides not KVC)
+    // (layoutGuides appear not to be KVC)
     
     [_observations addObject:
      [KVOBlock addObserverForKeyPath:@"edgesForExtendedLayout" ofObject:viewController withOptions:0 usingBlock:^(NSObject *object, NSString *keyPath, NSDictionary *change) {
@@ -130,9 +131,17 @@
     _viewController.edgesForExtendedLayout = edges;
 }
 
+- (IBAction)statusOverlayHiddenSwitchSet:(id)sender {
+    [_viewController setNeedsStatusBarAppearanceUpdate];
+}
+
+- (BOOL)statusOverlayHidden {
+    return self.statusOverlayHiddenSwitch.on;
+    // note: in UINavigationController, hiding the status overlay and not extending the bottom edge causes an extra 49pt bar to appear atop the tab bar; possibly, the nav controller is not implemented to be within another container view controller, so doing its own, absolute calculations for the bottom of the view (bottom guide is zero)
+}
+
 - (void)layoutUpdateAndLogViewControllerHierarchyWithReason:(NSString *)reason {
-    [[_viewController parentViewController].view setNeedsUpdateConstraints];
-    [[_viewController parentViewController].view updateConstraintsIfNeeded];
+    //[[_viewController parentViewController].view setNeedsUpdateConstraints];
     [[_viewController parentViewController].view setNeedsLayout];
     [self performSelector:@selector(updateAndLogViewControllerHierarchyWithReason:) withObject:reason afterDelay:0.1]; // after re-laid out
 }
@@ -144,17 +153,12 @@
     [self applyBlock:^(UIViewController *viewController) {
         
         NSMutableString *message = [NSMutableString stringWithString:NSStringFromClass([viewController class])];
-        
         [message appendFormat:@", layout guide top=%.1f bottom=%.1f", viewController.topLayoutGuide.length, viewController.bottomLayoutGuide.length];
-
         [message appendFormat:@", auto-adjusts scroll insets=%@", viewController.automaticallyAdjustsScrollViewInsets?@"YES":@"NO"];
-        
         [message appendFormat:@", edges for extended layout=%@", [HUD edgesForExtendedLayoutDescription:viewController.edgesForExtendedLayout]];
-        
         if (_scrollViewOrNil) {
             [message appendFormat:@", content inset top=%.1f bottom=%.1f left=%.1f right=%.1f", _scrollViewOrNil.contentInset.top, _scrollViewOrNil.contentInset.bottom, _scrollViewOrNil.contentInset.left, _scrollViewOrNil.contentInset.right];
         }
-        
         NSLog(@"%@", message);
     } toViewControllerAndAncestors:_viewController];
 }

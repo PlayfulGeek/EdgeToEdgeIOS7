@@ -12,7 +12,7 @@
 
 - (void)setContentInset:(UIEdgeInsets)contentInset {
     [super setContentInset:contentInset];
-    NSLog(@"ScrollView setContentInset: top=%.0f bottom=%.0f",contentInset.top, contentInset.bottom);
+    NSLog(@"[%@ %@]: top=%.0f bottom=%.0f", NSStringFromClass([self class]), NSStringFromSelector(_cmd) ,contentInset.top, contentInset.bottom);
 }
 
 @end

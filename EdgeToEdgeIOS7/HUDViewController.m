@@ -10,15 +10,12 @@
 #import "HUDViewController.h"
 
 @interface HUDViewController ()
-
 @property (weak, nonatomic) IBOutlet HUD *hud;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *hudXConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *hudYConstraint;
-
 @end
 
-@implementation HUDViewController {
-}
+@implementation HUDViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,6 +32,20 @@
         self.hudYConstraint.constant = MAX(0, MIN(self.hudYConstraint.constant + translation.y, maxY));
         [draggingGestureRecognizer setTranslation:CGPointMake(0, 0) inView:self.view];
     }
+}
+
+#pragma mark - Status Bar/Overlay
+
+//-(UIViewController *)childViewControllerForStatusBarHidden {
+//    return (UIViewController *)self.childViewControllers[0];
+//}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.hud.statusOverlayHidden;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    return UIStatusBarAnimationFade; // called but not having effect; what's missing?
 }
 
 @end

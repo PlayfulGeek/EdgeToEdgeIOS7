@@ -14,6 +14,8 @@
 
 - (void)bindViewController:(UIViewController *)viewController;
 
+- (BOOL)statusOverlayHidden;
+
 + (NSString *)edgesForExtendedLayoutDescription:(UIRectEdge)edges;
 
 @end

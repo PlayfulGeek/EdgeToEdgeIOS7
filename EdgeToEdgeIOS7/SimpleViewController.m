@@ -10,10 +10,8 @@
 #import "SimpleViewController.h"
 
 @interface SimpleViewController ()
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *firstScrollViewYConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *firstScrollViewYLabel;
-
 @end
 
 @implementation SimpleViewController
@@ -33,18 +31,17 @@
         NSLog(@"%@", vc);
         vc = vc.parentViewController;
     }
-    
 }
 
 - (BOOL)automaticallyAdjustsScrollViewInsets {
     BOOL adjusts = [super automaticallyAdjustsScrollViewInsets];
-    NSLog(@"%@ %@ => %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), adjusts?@"YES":@"NO");
+    NSLog(@"[%@ %@] => %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), adjusts?@"YES":@"NO");
     return adjusts;
 }
 
 - (UIRectEdge)edgesForExtendedLayout {
     UIRectEdge edges = [super edgesForExtendedLayout];
-    NSLog(@"%@ %@ => %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [HUD edgesForExtendedLayoutDescription:edges]);
+    NSLog(@"[%@ %@] => %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [HUD edgesForExtendedLayoutDescription:edges]);
     return edges;
 }
 
