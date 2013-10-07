@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Nav0ViewController : UICollectionViewController
+@interface RowsViewController : UICollectionViewController
 
 @end

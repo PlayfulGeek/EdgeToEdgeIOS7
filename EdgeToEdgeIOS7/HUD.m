@@ -8,6 +8,7 @@
 
 #import "HUD.h"
 #import "KVOBlock.h"
+#import "Logging.h"
 
 @interface HUD ()
 @property (weak, nonatomic) IBOutlet UILabel *contentInsetLabel;
@@ -149,7 +150,7 @@
 - (void)updateAndLogViewControllerHierarchyWithReason:(NSString *)reason {
     [self update];
     
-    NSLog(@"\n\n%@; frame=%@", reason, NSStringFromCGRect([_viewController view].frame));
+    MiscLogIn(@"%@; frame=%@", reason, NSStringFromCGRect([_viewController view].frame));
     [self applyBlock:^(UIViewController *viewController) {
         
         NSMutableString *message = [NSMutableString stringWithString:NSStringFromClass([viewController class])];
@@ -159,8 +160,9 @@
         if (_scrollViewOrNil) {
             [message appendFormat:@", content inset top=%.1f bottom=%.1f left=%.1f right=%.1f", _scrollViewOrNil.contentInset.top, _scrollViewOrNil.contentInset.bottom, _scrollViewOrNil.contentInset.left, _scrollViewOrNil.contentInset.right];
         }
-        NSLog(@"%@", message);
+        MiscLog(@"%@", message);
     } toViewControllerAndAncestors:_viewController];
+    MiscLogOut(@"");
 }
 
 + (NSString *)edgesForExtendedLayoutDescription:(UIRectEdge)edges {

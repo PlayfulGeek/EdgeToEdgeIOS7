@@ -8,6 +8,7 @@
 
 #import "HUD.h"
 #import "HUDViewController.h"
+#import "Logging.h"
 
 @interface HUDViewController ()
 @property (weak, nonatomic) IBOutlet HUD *hud;
@@ -36,16 +37,33 @@
 
 #pragma mark - Status Bar/Overlay
 
-//-(UIViewController *)childViewControllerForStatusBarHidden {
-//    return (UIViewController *)self.childViewControllers[0];
-//}
+-(UIViewController *)childViewControllerForStatusBarHidden {
+    UIViewController *currentChildViewController = self.childViewControllers[0];
+    UIViewController *statusBarHiddenAndUpdateAnimationDelegate = currentChildViewController;
+    StatusBarPLog(@"=> %@", statusBarHiddenAndUpdateAnimationDelegate);
+    return statusBarHiddenAndUpdateAnimationDelegate;
+}
 
 - (BOOL)prefersStatusBarHidden {
-    return self.hud.statusOverlayHidden;
+    StatusBarPLog(@"should not be called as childViewControllerForStatusBarHidden delegates this to its current child view controller");
+    return NO;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
-    return UIStatusBarAnimationFade; // called but not having effect; what's missing?
+    StatusBarPLog(@"should not be called as childViewControllerForStatusBarHidden (sic) delegates this to its current child view controller");
+    return UIStatusBarAnimationSlide;
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle {
+    UIViewController *currentChildViewController = self.childViewControllers[0];
+    UIViewController *statusBarStyleDelegate = currentChildViewController;
+    StatusBarPLog(@"=> %@", statusBarStyleDelegate);
+    return statusBarStyleDelegate;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    StatusBarPLog(@"should not be called as childViewControllerForStatusBarStyle delegates this to its current child view controller");
+    return UIStatusBarStyleDefault;
 }
 
 @end

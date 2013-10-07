@@ -269,7 +269,7 @@
             </objects>
             <point key="canvasLocation" x="-55" y="-494"/>
         </scene>
-        <!--Simple View Controller-->
+        <!--Simple View Controller - Simple View Controller-->
         <scene sceneID="cS4-Qo-7VG">
             <objects>
                 <viewController id="TCn-tj-xAA" customClass="SimpleViewController" sceneMemberID="viewController">
@@ -386,7 +386,7 @@
                             <constraint firstItem="MjG-Ir-LZc" firstAttribute="top" secondItem="v6s-1p-ekh" secondAttribute="top" id="ld7-Zf-IQb"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="jZy-aC-p4L"/>
+                    <navigationItem key="navigationItem" title="Simple View Controller" id="jZy-aC-p4L"/>
                     <connections>
                         <outlet property="firstScrollViewYConstraint" destination="ld7-Zf-IQb" id="Sd2-uO-Bo6"/>
                         <outlet property="firstScrollViewYLabel" destination="3se-AZ-h4y" id="lVV-24-3VL"/>
@@ -399,7 +399,7 @@
         <!--Navigation Controller - Nav Split Scroll-->
         <scene sceneID="Q5x-s8-HcU">
             <objects>
-                <navigationController definesPresentationContext="YES" id="dLB-gb-02n" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="dLB-gb-02n" customClass="NavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Nav Split Scroll" id="fRT-X7-01S"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oNP-Yz-oTx">
                         <autoresizingMask key="autoresizingMask"/>
@@ -843,7 +843,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="40L-6G-1Sh">
             <objects>
-                <tabBarController definesPresentationContext="YES" id="Zyl-Ga-Heu" sceneMemberID="viewController">
+                <tabBarController definesPresentationContext="YES" id="Zyl-Ga-Heu" customClass="TabBarController" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="8kH-fM-pWT">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
@@ -896,10 +896,10 @@
             </objects>
             <point key="canvasLocation" x="-664" y="843"/>
         </scene>
-        <!--Nav0 View Controller - Nav 0-->
+        <!--Rows View Controller - Rows View Controller-->
         <scene sceneID="3bl-Ay-JNp">
             <objects>
-                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="4n7-0c-ZXt" customClass="Nav0ViewController" sceneMemberID="viewController">
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="4n7-0c-ZXt" customClass="RowsViewController" sceneMemberID="viewController">
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="RUH-CB-4Lv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -910,7 +910,7 @@
                             <inset key="sectionInset" minX="200" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TestCell" id="17w-tl-UW3" customClass="Nav0Cell">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TestCell" id="17w-tl-UW3" customClass="Cell">
                                 <rect key="frame" x="200" y="44" width="120" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -942,7 +942,7 @@
                             <outlet property="delegate" destination="4n7-0c-ZXt" id="PZs-NX-vJW"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Nav 0" id="hRQ-EB-224">
+                    <navigationItem key="navigationItem" title="Rows View Controller" id="hRQ-EB-224">
                         <barButtonItem key="backBarButtonItem" title="Baack" id="kxz-ws-4Kr"/>
                     </navigationItem>
                 </collectionViewController>
@@ -953,7 +953,7 @@
         <!--Navigation Controller-->
         <scene sceneID="zVq-Zk-uXL">
             <objects>
-                <navigationController definesPresentationContext="YES" id="9PY-Jj-V3U" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="9PY-Jj-V3U" customClass="NavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mJg-K1-uPP">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

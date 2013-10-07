@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Nav0Cell : UICollectionViewCell
+@interface Cell : UICollectionViewCell
 @property (nonatomic) NSInteger cellNumber;
 @end

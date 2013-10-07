@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 955 Dreams. All rights reserved.
 //
 
-#import "Nav0Cell.h"
+#import "Cell.h"
 
-@interface Nav0Cell ()
+@interface Cell ()
 @property (weak, nonatomic) IBOutlet UILabel *cellLabel;
 @end
 
-@implementation Nav0Cell
+@implementation Cell
 
 -(void)setCellNumber:(NSInteger)cellNumber {
     _cellNumber = cellNumber;

@@ -7,6 +7,7 @@
 //
 
 #import "HUD.h"
+#import "Logging.h"
 #import "SimpleViewController.h"
 
 @interface SimpleViewController ()
@@ -25,29 +26,60 @@
     [super viewDidAppear:animated];
     // re-layout seems to be required for bottom extended edge to have effect when switching back to this (when a non-scroll view); is this a bug in the tab bar controller? seems it should lay out whenever it switches children if child has changed its extended edges
     [[self parentViewController].view setNeedsLayout];
-    NSLog(@"\n\nview controller hierarchy");
+    MiscLogIn(@"view controller hierarchy");
     UIViewController *vc = self;
     while (vc) {
-        NSLog(@"%@", vc);
+        MiscLog(@"%@", vc);
         vc = vc.parentViewController;
     }
+    MiscLogOut(@"");
 }
 
 - (BOOL)automaticallyAdjustsScrollViewInsets {
     BOOL adjusts = [super automaticallyAdjustsScrollViewInsets];
-    NSLog(@"[%@ %@] => %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), adjusts?@"YES":@"NO");
+    ScrollInsetPLog(@"=> %@", adjusts?@"YES":@"NO");
     return adjusts;
 }
 
 - (UIRectEdge)edgesForExtendedLayout {
     UIRectEdge edges = [super edgesForExtendedLayout];
-    NSLog(@"[%@ %@] => %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [HUD edgesForExtendedLayoutDescription:edges]);
+    ScrollInsetPLog(@"=> %@", [HUD edgesForExtendedLayoutDescription:edges]);
     return edges;
 }
 
 - (IBAction)offsetFirstScrollViewYSwitchSet:(UISwitch *)sender {
     self.firstScrollViewYConstraint.constant = sender.on ? 25 : 0;
     self.firstScrollViewYLabel.text = [NSString stringWithFormat:@"y: %.0f", self.firstScrollViewYConstraint.constant];
+}
+
+#pragma mark - Status Bar/Overlay
+
+-(UIViewController *)childViewControllerForStatusBarHidden {
+    UIViewController *statusBarHiddenAndUpdateAnimationDelegate = [super childViewControllerForStatusBarHidden];
+    StatusBarPLog(@"=> %@", statusBarHiddenAndUpdateAnimationDelegate);
+    return statusBarHiddenAndUpdateAnimationDelegate;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    BOOL statusOverlayHidden = [[HUD sharedInstance] statusOverlayHidden];
+    StatusBarPLog(@"=> %@", statusOverlayHidden?@"YES":@"NO");
+    return statusOverlayHidden;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    StatusBarPLog(@"=> UIStatusBarAnimationSlide");
+    return UIStatusBarAnimationSlide; // called but not having effect; what's missing?
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle {
+    UIViewController *statusBarStyleDelegate = [super childViewControllerForStatusBarStyle];
+    StatusBarPLog(@"=> %@", statusBarStyleDelegate);
+    return statusBarStyleDelegate;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    StatusBarPLog(@"=> UIStatusBarStyleDefault");
+    return UIStatusBarStyleDefault;
 }
 
 @end
