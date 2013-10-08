@@ -43,14 +43,14 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-    BOOL statusOverlayHidden = [[HUD sharedInstance] statusOverlayHidden];
+    BOOL statusOverlayHidden = [HUD sharedInstance].statusOverlayHidden;
     StatusBarPLog(@"=> %@", statusOverlayHidden?@"YES":@"NO");
     return statusOverlayHidden;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
     StatusBarPLog(@"=> UIStatusBarAnimationSlide");
-    return UIStatusBarAnimationSlide; // called but not having effect; what's missing?
+    return UIStatusBarAnimationSlide; // called but not having effect; what's missing? (APPLE)
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {

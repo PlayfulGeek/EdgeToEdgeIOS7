@@ -16,7 +16,7 @@ typedef enum {
 
 void IndentLog(LogIndentation indentation, NSString *format, ...);
 
-#define _ScrollInsetPLog(indentation, fmt, ...) //IndentLog(indentation, (@"%s " fmt), __PRETTY_FUNCTION__, ##__VA_ARGS__);
+#define _ScrollInsetPLog(indentation, fmt, ...) IndentLog(indentation, (@"%s " fmt), __PRETTY_FUNCTION__, ##__VA_ARGS__);
 #define ScrollInsetPLog(fmt, ...) _ScrollInsetPLog(LogIndentationSame, fmt, ##__VA_ARGS__);
 #define ScrollInsetPLogIn(fmt, ...) _ScrollInsetPLog(LogIndentationIn, fmt, ##__VA_ARGS__);
 #define ScrollInsetPLogOut(fmt, ...) _ScrollInsetPLog(LogIndentationOut, fmt, ##__VA_ARGS__);

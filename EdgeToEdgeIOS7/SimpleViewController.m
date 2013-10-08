@@ -24,7 +24,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    // re-layout seems to be required for bottom extended edge to have effect when switching back to this (when a non-scroll view); is this a bug in the tab bar controller? seems it should lay out whenever it switches children if child has changed its extended edges
+    // re-layout seems to be required for bottom extended edge to have effect when switching back to this (when a non-scroll view); is this a bug in the tab bar controller? seems it should lay out whenever it switches children if child has changed its extended edges (APPLE)
     [[self parentViewController].view setNeedsLayout];
     MiscLogIn(@"view controller hierarchy");
     UIViewController *vc = self;
@@ -54,6 +54,8 @@
 
 #pragma mark - Status Bar/Overlay
 
+// Why not just have prefersStatusBarHidden call its child view controller's prefersStatusBarHidden if a container vc? (APPLE)
+
 -(UIViewController *)childViewControllerForStatusBarHidden {
     UIViewController *statusBarHiddenAndUpdateAnimationDelegate = [super childViewControllerForStatusBarHidden];
     StatusBarPLog(@"=> %@", statusBarHiddenAndUpdateAnimationDelegate);
@@ -61,14 +63,14 @@
 }
 
 - (BOOL)prefersStatusBarHidden {
-    BOOL statusOverlayHidden = [[HUD sharedInstance] statusOverlayHidden];
+    BOOL statusOverlayHidden = [HUD sharedInstance].statusOverlayHidden;
     StatusBarPLog(@"=> %@", statusOverlayHidden?@"YES":@"NO");
     return statusOverlayHidden;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
     StatusBarPLog(@"=> UIStatusBarAnimationSlide");
-    return UIStatusBarAnimationSlide; // called but not having effect; what's missing?
+    return UIStatusBarAnimationSlide; // called but not having effect; what's missing? (APPLE)
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle {

@@ -6,10 +6,31 @@
 //  Copyright (c) 2013 955 Dreams. All rights reserved.
 //
 
+#import "HUD.h"
+#import "KVOBlock.h"
 #import "Logging.h"
 #import "NavigationController.h"
 
-@implementation NavigationController
+@implementation NavigationController {
+    id _navigationBarHiddenObservation;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    _navigationBarHiddenObservation = [KVOBlock addObserverForKeyPath:@"navigationBarHidden" ofObject:[HUD sharedInstance] withOptions:NSKeyValueObservingOptionInitial usingBlock:^(NSObject *object, NSString *keyPath, NSDictionary *change) {
+        [self setNavigationBarHidden:[HUD sharedInstance].navigationBarHidden animated:YES];
+    }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [KVOBlock removeObservation:_navigationBarHiddenObservation];
+    _navigationBarHiddenObservation = nil;
+    [super viewWillDisappear:animated];
+}
+
+- (void)dealloc {
+    [KVOBlock removeObservation:_navigationBarHiddenObservation];
+}
 
 #pragma mark - Status Bar/Overlay
 

@@ -14,7 +14,9 @@
 
 - (void)bindViewController:(UIViewController *)viewController;
 
-- (BOOL)statusOverlayHidden;
+@property (nonatomic, readonly) BOOL statusOverlayHidden;
+
+@property (nonatomic, readonly) BOOL navigationBarHidden;
 
 + (NSString *)edgesForExtendedLayoutDescription:(UIRectEdge)edges;
 

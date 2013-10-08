@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *edgesForExtendedLayoutTopSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *edgesForExtendedLayoutBottomSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *statusOverlayHiddenSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *navigationBarHiddenSwitch;
 @end
 
 @implementation HUD {
@@ -54,6 +55,10 @@
     
     _edgesForExtendedLayoutTopSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeTop;
     _edgesForExtendedLayoutBottomSwitch.on = _viewController.edgesForExtendedLayout & UIRectEdgeBottom;
+    
+    if ([_viewController isKindOfClass:[UINavigationController class]]) {
+        _navigationBarHiddenSwitch.on = ((UINavigationController *)_viewController).navigationBarHidden;
+    }
 }
 
 - (void)bindViewController:(UIViewController *)viewController {
@@ -64,8 +69,8 @@
     [self performSelector:@selector(updateAndLogViewControllerHierarchyWithReason:) withObject:@"leaf view controller bound" afterDelay:0];
     
     [self observeViewController:_viewController];
-    if ([[_viewController view] isKindOfClass:[UIScrollView class]]) {
-        [self observeScrollView:(UIScrollView *)[_viewController view]];
+    if (_scrollViewOrNil) {
+        [self observeScrollView:_scrollViewOrNil];
     }
 }
 
@@ -140,6 +145,20 @@
     return self.statusOverlayHiddenSwitch.on;
     // note: in UINavigationController, hiding the status overlay and not extending the bottom edge causes an extra 49pt bar to appear atop the tab bar; possibly, the nav controller is not implemented to be within another container view controller, so doing its own, absolute calculations for the bottom of the view (bottom guide is zero)
 }
+
+- (BOOL)navigationBarHidden {
+    return self.navigationBarHiddenSwitch.on;
+}
+
+- (IBAction)navigationBarHiddenSwitchSet:(id)sender {
+    static NSString *const key = @"navigationBarHidden";
+    [self willChangeValueForKey:key];
+    [self didChangeValueForKey:key];
+}
+
+//+ (NSSet *)keyPathsForValuesAffectingNavigationBarHidden {
+//    return [NSSet setWithObject:@"navigationBarHiddenSwitch.on"];
+//}
 
 - (void)layoutUpdateAndLogViewControllerHierarchyWithReason:(NSString *)reason {
     //[[_viewController parentViewController].view setNeedsUpdateConstraints];
